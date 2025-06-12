@@ -1,0 +1,363 @@
+-- Herencia
+
+package herencia;
+
+public class Persona {
+    String nombre;
+    int edad;
+    String nacionalidad;
+
+    public Persona(String nombre, int edad, String nacionalidad) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.nacionalidad = nacionalidad;
+    }
+
+    public Persona() {}
+
+    public String saludar() {
+        return "Hola soy una persona";
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre + ", Edad: " + edad + ", Nacionalidad: " + nacionalidad;
+    }
+}
+
+
+
+
+
+package herencia;
+
+public abstract class Empleado extends Persona {
+    String tipoEmpleado;
+    String tipoContrato;
+    double sueldo;
+
+    public Empleado(String nombre, int edad, String nacionalidad, String tipoEmpleado, String contrato, double sueldo) {
+        super(nombre, edad, nacionalidad);
+        this.tipoEmpleado = tipoEmpleado;
+        this.tipoContrato = contrato;
+        this.sueldo = sueldo;
+    }
+
+    public String trabajar() {
+        return "El empleado trabaja";
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + 
+               ", TipoEmpleado: " + tipoEmpleado + 
+               ", Contrato: " + tipoContrato + 
+               ", Sueldo: " + sueldo;
+    }
+}
+
+
+
+
+
+package herencia;
+
+public class Profesor extends Empleado {
+    String titulo;
+    int numMaterias;
+
+    public Profesor(String nombre, int edad, String nacionalidad, String tipo, String contrato, double sueldo, String titulo, int numMaterias) {
+        super(nombre, edad, nacionalidad, tipo, contrato, sueldo);
+        this.titulo = titulo;
+        this.numMaterias = numMaterias;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + 
+               ", Título: " + titulo + 
+               ", Materias: " + numMaterias;
+    }
+}
+
+
+
+
+
+
+package herencia;
+
+public class Estudiante extends Persona {
+    String numCarnet;
+    String jornada;
+    
+    public Estudiante(String nombre, int edad, String nacionalidad, String numero, String jornada) {
+        super(nombre, edad, nacionalidad);
+        this.numCarnet = numero;
+        this.jornada = jornada;
+    }
+    
+    public Estudiante() {
+        super();
+    }
+    
+    public String saludar() {
+        jornada = "mañana";
+        numCarnet = "123";
+        return "Hola soy un estudiante de la " + jornada + " con número de carnet " + numCarnet;
+    }
+    
+    public String getNumCarnet() {
+        return numCarnet;
+    }
+    
+    public void setNumCarnet(String numCarnet) {
+        this.numCarnet = numCarnet;
+    }
+    
+    public String getJornada() {
+        return jornada;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + 
+               ", Carnet: " + numCarnet + 
+               ", Jornada: " + jornada;
+    }
+}
+
+
+
+
+package herencia;
+
+public class Main {
+    public static void main(String[] args) {
+        // Crear un objeto de Persona
+        Persona persona = new Persona("Juan", 30, "Ecuador");
+        System.out.println(persona);
+        System.out.println(persona.saludar());
+        
+        // Crear un objeto de Estudiante
+        Estudiante estudiante = new Estudiante("Ana", 20, "Colombia", "456", "tarde");
+        System.out.println(estudiante);
+        System.out.println(estudiante.saludar());
+
+        // Crear un objeto de Profesor
+        Profesor profesor = new Profesor("Carlos", 45, "Perú", "Titular", "Indefinido", 2500.50, "Doctorado", 5);
+        System.out.println(profesor);
+        System.out.println(profesor.saludar());  
+        System.out.println(profesor.trabajar()); 
+
+        // Polimorfismo: Persona referencia a Estudiante
+        Persona personaEstudiante = new Estudiante("Pedro", 22, "Argentina", "789", "noche");
+        System.out.println(personaEstudiante);
+        System.out.println(personaEstudiante.saludar());
+
+        // Casting para acceder a métodos específicos
+        if (personaEstudiante instanceof Estudiante) {
+            Estudiante est = (Estudiante) personaEstudiante;
+            System.out.println("Carnet (desde cast): " + est.getNumCarnet());
+        }
+    }
+}
+
+
+-- Polimorfismo
+
+
+public interface AreaPerimetro {
+
+
+    public double calcularArea(double...valores);
+
+    public double calcularPerimetro(double...valores);
+    
+}
+
+
+
+public class Cuadrado implements AreaPerimetro {
+
+
+    public double calcularArea(double... valores) {
+        return valores[0]*valores[0];
+    }
+
+
+    public double calcularPerimetro(double... valores) {
+        return 4*valores[0];
+    }
+
+
+}
+
+
+public class Rectangulo implements AreaPerimetro {
+
+
+    public double calcularArea(double... valores) {
+        return valores[0]* valores[1];
+    }
+
+
+    public double calcularPerimetro(double... valores) {
+        return (2*(valores[0]+valores[1]));
+    }
+
+}
+
+
+public class Trapecio implements AreaPerimetro{
+
+
+    public double calcularArea(double... valores) {
+        return ((valores[0]+valores[1])* valores[2])/2;
+    }
+
+    public double calcularPerimetro(double... valores) {
+        return (valores[0]+valores[1]+valores[2]+valores[3]);
+    }
+
+
+}
+
+
+
+public class Circulo implements AreaPerimetro {
+
+
+    public double calcularArea(double... valores) {
+        return Math.PI* valores[0]*valores[0];
+    }
+
+
+    public double calcularPerimetro(double... valores) {
+        return 2*Math.PI*(valores[0]);
+    }
+ 
+
+}
+
+
+
+-- Main 
+        AreaPerimetro cuadrado= new Cuadrado();
+        AreaPerimetro circulo= new Circulo();
+        AreaPerimetro rectangulo= new Rectangulo();
+        AreaPerimetro trapecio= new Trapecio();
+
+
+        System.out.println("Area del cuadrado " +cuadrado.calcularArea(10)+  " ---- "+ "Perimetro: "+ cuadrado.calcularPerimetro(10));
+        System.out.println("Area del rectangulo " +rectangulo.calcularArea(10,30)+" ---- " + "Perimetro:" + rectangulo.calcularPerimetro(10,5));
+        System.out.println("Area del circulo " +circulo.calcularArea(3)+ " ---- "+ "Perimetro: "+ cuadrado.calcularPerimetro(6));
+        System.out.println("Area del trapecio " +trapecio.calcularArea(2.5,1.5,5)+" ---- "+ "Perimetro: "+ trapecio.calcularPerimetro(2,2,10,5));
+
+
+
+-- Set -- No se permiten repetidos: HashSet, TreeSet(Ordena), 
+
+
+
+ public <T> void recorrer(Set<T> conjunto) {
+        for (T x : conjunto) {
+            System.out.println(x);
+        }
+    }
+
+Set<String> nombres = Set.of("Anita","Pedro","Juan");
+
+ Set<String> facultades = new TreeSet<String>();
+        facultades.add("ESFOT"); facultades.add("Ambiental"); facultades.add("Sistemas");
+
+
+Set<Persona> nombres12 = new HashSet<>(Set.of(
+                new Persona("Alejandro", 20, "Ecuatoriano"),
+                new Persona("Sofia", 19, "Venezolano"),
+                new Persona("Josema", 34, "Colombiano")));
+
+Iterator iterador1 = nombres12.iterator();
+
+while (iterador1.hasNext()) {
+            System.out.println(iterador1.next());
+        }
+
+
+
+
+-- Lista  ArrayList, LinkedList
+
+    public <T> void recorrer(List<T> Lista) {
+        for (T x : Lista) {
+            System.out.println(x);
+        }
+    }
+
+
+
+List<String> nombre = List.of("Juan", "Anita", "Maria");
+
+
+List<String> nombres = new ArrayList<String>(List.of("Juan", "Anita", "Alex"));
+
+
+List<Persona> personas = List.of(
+                new Persona("Carlos", 20, "Ecuatoriano"),
+                new Persona("Oscar", 19, "Venezolano"),
+                new Persona("Jose", 34, "Colombiano"));
+l.recorrer(personas);
+
+
+
+
+--- Maps  Map- TreeMap, HashMap, LinkedHashMap (No hay duplicados)
+
+
+    public <K, V> void recorrerMapa(Map<K, V> mapa) {
+        for (Map.Entry<K, V> entry: mapa.entrySet ()){
+            System.out.println("Clave: " + entry.getKey() + " Valor: " + entry.getValue());
+        }
+    }
+
+
+
+ Map<Integer,String> nombres= Map.of(1,"Anita",2,"Pepe");
+
+
+Map<Integer, Persona> personasA= Map.of(1, new Persona("Alejandro", 20, "Ecuatoriano"),
+                2, new Persona("Sofia", 19, "Venezolano"),
+                3, new Persona("Josema", 34, "Colombiano"));
+
+        mapa.recorrerMapa(personasA);
+
+
+Map<String,String> map = new HashMap<String, String>();
+        map.put("1777878", "Paula");
+
+
+
+
+--- Extras
+
+
+For para arreglos: 
+
+for (int num : numeros) {
+System.out.println("Número: " + num);
+}
+
+
+ public double sumar(double ...n){
+        double total=0;
+        for (double x: n){total+=x;}
+       return total;
+ }
+
+
+for (Persona persona : personas) {
+    System.out.println(persona.getNombre());
+}
+
+
+
